@@ -18,7 +18,7 @@ spec:
         - days: 3
           priority: 1
           selector: '{log_type="infrastructure"}'
-  managementState: Managedoc
+  managementState: Managed
   size: 1x.extra-small
   storage:
     schemas:
