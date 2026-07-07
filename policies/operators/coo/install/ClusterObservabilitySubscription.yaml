@@ -1,0 +1,20 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: cluster-observability-operator
+  namespace: openshift-cluster-observability-operator
+spec:
+  channel: stable
+  installPlanApproval: Manual
+  name: cluster-observability-operator
+  # References the mirrored catalog created by the common disconnected-env policy
+  # (CatalogSource "redhat-operators-disconnected" in openshift-marketplace).
+  source: redhat-operators-disconnected
+  sourceNamespace: openshift-marketplace
+  # NOTE: v1.1.1 is the version mirrored in the STC 4.18 reference. haram-edge-001
+  # is OCP 4.20 — set this to the COO CSV actually mirrored for 4.20. Verify on the
+  # spoke: oc get packagemanifest cluster-observability-operator -n openshift-marketplace \
+  #   -o jsonpath='{.status.channels[?(@.name=="stable")].currentCSV}'
+  startingCSV: cluster-observability-operator.v1.1.1
+status:
+  state: AtLatestKnown
