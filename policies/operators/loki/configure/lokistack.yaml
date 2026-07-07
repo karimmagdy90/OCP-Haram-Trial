@@ -1,0 +1,43 @@
+apiVersion: loki.grafana.com/v1
+kind: LokiStack
+metadata:
+  annotations:
+  name: logging-loki
+  namespace: openshift-logging
+
+spec:
+  hashRing:
+    type: memberlist
+  limits:
+    global:
+      queries:
+        queryTimeout: 3m
+      retention:
+        days: 7
+        streams:
+        - days: 3
+          priority: 1
+          selector: '{log_type="infrastructure"}'
+  managementState: Managedoc
+  size: 1x.extra-small
+  storage:
+    schemas:
+    - effectiveDate: "2024-10-01"
+      version: v13
+    secret:
+      name: logging-loki-odf
+      type: s3
+    tls:
+      caName: openshift-service-ca.crt
+  storageClassName: ocs-storagecluster-ceph-rbd   #should be from Deployment SCs available
+  template:
+    compactor: {}
+    distributor: {}
+    gateway: {}
+    indexGateway: {}
+    ingester: {}
+    querier: {}
+    queryFrontend: {}
+    ruler: {}
+  tenants:
+    mode: openshift-logging

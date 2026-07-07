@@ -1,0 +1,22 @@
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: hub-policyset-placement
+  namespace: haram-policies
+spec:
+  predicates:
+  - requiredClusterSelector:
+      labelSelector:
+          matchExpressions:
+            - key: type
+              operator: In
+              values:
+              - dedicated
+            - key: function
+              operator: In
+              values:
+              - management
+            - key: env
+              operator: In
+              values:
+              - testbed

@@ -1,0 +1,164 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: apply-cluster-post-configuration
+placementBindingDefaults:
+  name: oct4-testbed-001-base-placement-binding
+policyDefaults:
+  namespace: haram-policies
+  consolidateManifests: false
+  generatePlacementWhenInSet: false
+  #orderPolicies: true
+  #orderManifests: true
+  remediationAction: enforce
+  severity: medium
+  policySets:
+    - haram-policyset
+policies:
+
+#  # --- 1. Baseline OCP day-2 config (no operators) --------------------------
+#  - name: apply-cluster-post-configuration
+#    categories: ["CM Configuration Management"]
+#    controls: ["CM-2 Baseline Configuration"]
+#    description: "Apply cluster post-install configuration"
+#    manifests:
+#      - path: cluster-config/
+#      #- path: cluster-config/disconnected-config/catalogsource.yaml
+#      #  patches:
+#      #    - apiVersion: operators.coreos.com/v1alpha1
+#      #      kind: CatalogSource
+#      #      metadata:
+#      #        name: cs-redhat-operator-index
+#      #      spec:
+#      #        image: registry.apps.oct4-hub.telco.te/redhat/redhat-operator-index:v4.20 
+#
+#  - name: deploy-and-config-lso
+#    dependencies:
+#      - name: apply-cluster-post-configuration
+#    categories: ["CM Configuration Management"]
+#    controls: ["CM-2 Baseline Configuration"]
+#    description: "Deploy and Config Local-Storage-Operator"
+#    orderManifests: true
+#    manifests:
+#      - path: operators/lso/install/
+#        patches:
+#          - apiVersion: operators.coreos.com/v1alpha1
+#            kind: Subscription
+#            metadata:
+#              name: local-storage-operator
+#              namespace: openshift-local-storage
+#            spec:
+#              source: cs-redhat-operators-index
+#      - path: operators/lso/config/lso-volumeset.yaml
+#
+#  - name: deploy-and-config-gitops
+#    dependencies:
+#      - name: apply-cluster-post-configuration
+#    categories: ["CM Configuration Management"]
+#    controls: ["CM-2 Baseline Configuration"]
+#    description: "Deploy and Config GitOps Operator"
+#    orderManifests: true
+#    manifests:
+#      - path: operators/gitops/install/
+#        # Used for ROL LAB
+#        patches:
+#          - apiVersion: operators.coreos.com/v1alpha1
+#            kind: Subscription
+#            metadata:
+#              name: openshift-gitops-operator
+#              namespace: openshift-gitops-operator
+#            spec:
+#              source: gls-catalog-cs
+#      - path: operators/gitops/config/
+#        # Used for ROL LAB
+#        patches:
+#          - apiVersion: argoproj.io/v1beta1
+#            kind: ArgoCD
+#            metadata:
+#              name: openshift-gitops
+#              namespace: openshift-gitops
+#            spec:
+#              repo:
+#               initContainers:
+#               - args:
+#                 - -c
+#                 - cp /policy-generator/PolicyGenerator-not-fips-compliant /policy-generator-tmp/PolicyGenerator
+#                 command:
+#                 - /bin/bash
+#                 image: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9@sha256:58f24f4a9869b9fc5f67dfe5aed1bdaae61880654b20c750e17ca12867b1d9a4
+#                 name: policy-generator-install
+#                 volumeMounts:
+#                 - mountPath: /policy-generator-tmp
+#                   name: policy-generator
+#
+#  - name: hub-policy-verification
+#    categories: ["CM Configuration Management"]
+#    controls: ["CM-2 Baseline Configuration"]
+#    description: "Verification Policy"
+#    remediationAction: inform
+#    manifests:
+#      - path: verify/
+
+  - name: install-loki-operator
+  #  dependencies:
+  #    - name: apply-cluster-post-configuration
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Install Loki Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/loki/install/
+        patches:
+          - apiVersion: operators.coreos.com/v1alpha1
+            kind: Subscription
+            metadata:
+              name: loki-operator
+              namespace: openshift-operators-redhat
+            spec:
+              source: gls-catalog-cs     #change to match the catalogSource created for deplyment
+
+  - name: configure-loki-operator
+    dependencies:
+      - name: install-loki-operator
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Configure Loki Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/loki/configure/
+        patches:
+          - apiVersion: v1
+            kind: Secret
+            metadata:
+              name: logging-loki-odf
+              namespace: openshift-logging
+            type: Opaque
+            data:
+              # fromSecret returns the value already base64-encoded (Secret .data is base64),
+              # so these go into data: verbatim — no base64enc.
+              access_key_id: '{{ fromSecret "openshift-logging" "loki-bucket-odf" "AWS_ACCESS_KEY_ID" }}'
+              access_key_secret: '{{ fromSecret "openshift-logging" "loki-bucket-odf" "AWS_SECRET_ACCESS_KEY" }}'
+              # fromConfigMap returns plaintext, so it must be base64enc'd to sit in data:.
+              # BUCKET_NAME carries the OBC random suffix, resolving the static-name issue.
+              bucketnames: '{{ fromConfigMap "openshift-logging" "loki-bucket-odf" "BUCKET_NAME" | base64enc }}'
+              endpoint: '{{ printf "https://%s:%s" (fromConfigMap "openshift-logging" "loki-bucket-odf" "BUCKET_HOST") (fromConfigMap "openshift-logging" "loki-bucket-odf" "BUCKET_PORT") | base64enc }}'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+policySets:
+  - name: haram-policyset
+    description: "This policy set is focused on the components that install to the Haram cluster."
+    placement:
+      placementPath: "placement.yaml"

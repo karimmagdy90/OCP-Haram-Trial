@@ -1,0 +1,13 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: redhat-operators-disconnected
+  namespace: openshift-marketplace
+spec:
+  sourceType: grpc
+  image: registry.redhat.io/redhat-operator-index:v4.20
+  displayName: Red Hat Operators (Mirror)
+status:
+    connectionState:
+        lastObservedState: READY
+

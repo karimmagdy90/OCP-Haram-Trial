@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: haram-policies
+---
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  name: local-cluster
+  Namespace: hub-policies   #?????????????
+  labels:
+    env: testbed
+    function: management
+    type: dedicated
+    cluster.open-cluster-management.io/clusterset: haram-clusterset
+---
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: ManagedClusterSet
+metadata:
+  name: haram-clusterset
+  namespace: hub-policies #?????????????????
+spec:
+  clusterSelector:
+    selectorType: ExclusiveClusterSetLabel
+---
+# Bind the default ManagedClusterSet to the hub-policies namespace so the
+# Placement above can resolve managed clusters from it.
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: ManagedClusterSetBinding
+metadata:
+  name: haram-clusterset
+  namespace: haram-policies
+spec:
+  clusterSet: haram-clusterset

@@ -1,0 +1,11 @@
+kind: MultiClusterHub
+metadata:
+  name: multiclusterhub
+  namespace: open-cluster-management
+status:
+  conditions:
+  - message: All hub components ready.
+    reason: ComponentsAvailable
+    status: "True"
+    type: Complete
+  phase: Running

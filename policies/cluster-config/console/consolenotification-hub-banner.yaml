@@ -1,0 +1,9 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleNotification
+metadata:
+  name: te-hub-banner
+spec:
+  text: 'Telecom Egypt - Hub Cluster'
+  location: BannerTop
+  color: '#ffffff'
+  backgroundColor: '#5B2C91'

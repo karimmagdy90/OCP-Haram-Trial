@@ -1,0 +1,11 @@
+# Plain Kustomization (not a Component) — invoked directly by the README's
+# Wave 2: `kustomize build operators/acm/ | oc create -f -`.
+# Note we deliberately do NOT include the MultiClusterHub here; that lives
+# under configure/ and is applied separately so we can wait for the
+# Subscription to become AtLatestKnown first.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - loki-namespace.yaml
+  - loki-operatorgroup.yaml
+  - loki-subscription.yaml
