@@ -154,6 +154,18 @@ policies:
             spec:
               source: gls-catalog-cs     #change to match the catalogSource created for deployment
 
+
+  - name: configure-logging-operator
+    dependencies:
+      - name: install-logging-operator
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Configure logging Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/logging/configure/
+
+
 #          - apiVersion: v1
 #            kind: Secret
 #            metadata:

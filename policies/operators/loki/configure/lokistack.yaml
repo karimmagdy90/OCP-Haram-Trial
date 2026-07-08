@@ -1,7 +1,6 @@
 apiVersion: loki.grafana.com/v1
 kind: LokiStack
 metadata:
-  annotations:
   name: logging-loki
   namespace: openshift-logging
 

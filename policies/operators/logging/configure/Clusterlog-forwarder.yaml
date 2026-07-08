@@ -1,13 +1,13 @@
 apiVersion: observability.openshift.io/v1
 kind: ClusterLogForwarder
 metadata:
-  name: instance
+  name: collector
   namespace: openshift-logging
 spec:
   serviceAccount:
-    name: logging-collector
+    name: collector
   outputs:
-    - name: lokistack-out
+    - name: default-lokistack
       type: lokiStack
       lokiStack:
         target:
@@ -21,10 +21,10 @@ spec:
           key: service-ca.crt
           configMapName: openshift-service-ca.crt
   pipelines:
-    - name: loki-infra-app-audit-logs
+    - name: default-logstore
       inputRefs:
         - application
         - infrastructure
-        - audit
+        #- audit
       outputRefs:
-        - lokistack-out
+        - default-lokistack
