@@ -3,12 +3,11 @@ kind: UIPlugin
 metadata:
   name: logging
 spec:
-  type: Logging
   logging:
-    lokiStack:
-      # Must match the LokiStack name deployed by the logging/loki policies.
-      # TE files reference a LokiStack but do not pin a name; the reference repo
-      # uses "logging-loki". Confirm on the spoke: oc get lokistack -n openshift-logging
-      name: logging-loki
     logsLimit: 50
+    lokiStack:
+      name: logging-loki
+      namespace: openshift-logging
+    schema: otel
     timeout: 30s
+  type: Logging

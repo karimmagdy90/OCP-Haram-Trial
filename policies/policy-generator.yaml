@@ -157,13 +157,44 @@ policies:
 
   - name: configure-logging-operator
     dependencies:
-      - name: install-logging-operator
+      - name: configure-loki-operator
     categories: ["CM Configuration Management"]
     controls: ["CM-2 Baseline Configuration"]
     description: "Configure logging Operator"
     orderManifests: true
     manifests:
       - path: operators/logging/configure/
+
+
+
+  - name: install-clusterobservability-operator
+    dependencies:
+      - name: configure-logging-operator
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Install Cluster Observability Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/coo/install/
+        patches:
+          - apiVersion: operators.coreos.com/v1alpha1
+            kind: Subscription
+            metadata:
+              name: cluster-observability-operator
+              namespace: openshift-cluster-observability-operator
+            spec:
+              source: gls-catalog-cs     #change to match the catalogSource created for deployment
+
+
+  - name: configure-clusterobservability-operator
+    dependencies:
+      - name: install-clusterobservability-operator
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Configure Cluster Observability Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/coo/configure/
 
 
 #          - apiVersion: v1
