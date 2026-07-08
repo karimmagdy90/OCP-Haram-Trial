@@ -7,6 +7,6 @@ spec:
   channel: stable-6.4
   installPlanApproval: Automatic
   name: loki-operator
-  source: redhat-operators-disconnected        #as per CatalogSource name 
+  source: redhat-operator-index       #as per CatalogSource name 
   sourceNamespace: openshift-marketplace
 
