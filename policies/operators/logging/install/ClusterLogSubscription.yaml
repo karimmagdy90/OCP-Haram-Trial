@@ -7,5 +7,5 @@ spec:
   installPlanApproval: Automatic
   name: cluster-logging
   channel: stable-6.4
-  source: redhat-operators-disconnected      # as per catalogsource Name
+  source: redhat-operator-index      # as per catalogsource Name
   sourceNamespace: openshift-marketplace
