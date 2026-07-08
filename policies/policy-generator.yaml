@@ -114,7 +114,7 @@ policies:
             kind: Subscription
             metadata:
               name: loki-operator
-              namespace: openshift-operators-redhat
+              namespace: redhat-operator-index
             spec:
               source: gls-catalog-cs     #change to match the catalogSource created for deplyment
 
