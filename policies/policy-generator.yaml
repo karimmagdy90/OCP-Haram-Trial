@@ -116,7 +116,7 @@ policies:
               name: loki-operator
               namespace: openshift-operators-redhat
             spec:
-              source: gls-catalog-cs     #change to match the catalogSource created for deplyment
+              source: gls-catalog-cs     #change to match the catalogSource created for deployment
 
   - name: configure-loki-operator
     dependencies:
@@ -135,6 +135,25 @@ policies:
               namespace: openshift-logging
             spec:
               storageClassName: ocs-external-storagecluster-ceph-rbd 
+
+  - name: install-logging-operator
+  #  dependencies:
+  #    - name: apply-cluster-post-configuration
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Install logging Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/logging/install/
+        patches:
+          - apiVersion: operators.coreos.com/v1alpha1
+            kind: Subscription
+            metadata:
+              name: cluster-logging
+              namespace: openshift-logging
+            spec:
+              source: gls-catalog-cs     #change to match the catalogSource created for deployment
+
 #          - apiVersion: v1
 #            kind: Secret
 #            metadata:
