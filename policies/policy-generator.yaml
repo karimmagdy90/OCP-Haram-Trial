@@ -197,6 +197,16 @@ policies:
       - path: operators/coo/configure/
 
 
+  - name: configure-monitoring-operator
+    #dependencies:
+      #- name: install-clusterobservability-operator
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Configure Monitoring Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/monitoring/monitoring-configuration-cm.yaml
+
 #          - apiVersion: v1
 #            kind: Secret
 #            metadata:
