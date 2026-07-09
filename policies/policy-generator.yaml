@@ -134,7 +134,7 @@ policies:
               name: logging-loki
               namespace: openshift-logging
             spec:
-              storageClassName: ocs-external-storagecluster-ceph-rbd 
+              storageClassName: ocs-external-storagecluster-ceph-rbd    #change to match the storageclass created for deployment
 
   - name: install-logging-operator
   #  dependencies:
@@ -206,6 +206,137 @@ policies:
     orderManifests: true
     manifests:
       - path: operators/monitoring/monitoring-configuration-cm.yaml
+        patches:    # this patch to change StoragClassname to match on the lab deployment
+          - apiVersion: v1
+            kind: ConfigMap
+            metadata:
+              name: cluster-monitoring-config
+              namespace: openshift-monitoring
+            data:
+              config.yaml: |-
+                enableUserWorkload: false
+                alertmanagerMain:
+                  nodeSelector:
+                    node-role.kubernetes.io/infra: ""
+                  tolerations:
+                    - effect: NoSchedule
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - effect: NoExecute
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - key: node-role.kubernetes.io/master
+                      operator: Exists
+                      effect: NoSchedule
+                  volumeClaimTemplate:
+                    metadata:
+                      name: alertmanager-claim
+                    spec:
+                      storageClassName: ocs-external-storagecluster-ceph-rbd
+                      resources:
+                        requests:
+                          storage: 50Gi
+                prometheusK8s:
+                  retention: 14d
+                  retentionSize: 210GB
+                  nodeSelector:
+                    node-role.kubernetes.io/infra: ""
+                  tolerations:
+                    - effect: NoSchedule
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - effect: NoExecute
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - key: node-role.kubernetes.io/master
+                      operator: Exists
+                      effect: NoSchedule
+                  volumeClaimTemplate:
+                    metadata:
+                      name: prometheus-claim
+                    spec:
+                      storageClassName: ocs-external-storagecluster-ceph-rbd
+                      resources:
+                        requests:
+                          storage: 250Gi
+                prometheusOperator:
+                  nodeSelector:
+                    node-role.kubernetes.io/infra: ""
+                  tolerations:
+                    - effect: NoSchedule
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - effect: NoExecute
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - key: node-role.kubernetes.io/master
+                      operator: Exists
+                      effect: NoSchedule
+                kubeStateMetrics:
+                  nodeSelector:
+                    node-role.kubernetes.io/infra: ""
+                  tolerations:
+                    - effect: NoSchedule
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - effect: NoExecute
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - key: node-role.kubernetes.io/master
+                      operator: Exists
+                      effect: NoSchedule
+                metricsServer:
+                  nodeSelector:
+                    node-role.kubernetes.io/infra: ""
+                  tolerations:
+                    - effect: NoSchedule
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - effect: NoExecute
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - key: node-role.kubernetes.io/master
+                      operator: Exists
+                      effect: NoSchedule
+                telemeterClient:
+                  nodeSelector:
+                    node-role.kubernetes.io/infra: ""
+                  tolerations:
+                    - effect: NoSchedule
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - effect: NoExecute
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - key: node-role.kubernetes.io/master
+                      operator: Exists
+                      effect: NoSchedule
+                openshiftStateMetrics:
+                  nodeSelector:
+                    node-role.kubernetes.io/infra: ""
+                  tolerations:
+                    - effect: NoSchedule
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - effect: NoExecute
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - key: node-role.kubernetes.io/master
+                      operator: Exists
+                      effect: NoSchedule
+                thanosQuerier:
+                  nodeSelector:
+                    node-role.kubernetes.io/infra: ""
+                  tolerations:
+                    - effect: NoSchedule
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - effect: NoExecute
+                      key: node-role.kubernetes.io/infra
+                      value: reserved
+                    - key: node-role.kubernetes.io/master
+                      operator: Exists
+                      effect: NoSchedule
 
 #          - apiVersion: v1
 #            kind: Secret
