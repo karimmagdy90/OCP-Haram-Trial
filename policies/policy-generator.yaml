@@ -219,7 +219,7 @@ policies:
                     metadata:
                       name: alertmanager-pvc
                     spec:
-                      storageClassName: ocs-external-storagecluster-ceph-rbd    # change to match the storageclass created for deployment
+                      storageClassName: ocs-external-storagecluster-ceph-rbd
                       resources:
                         requests:
                           storage: 50Gi
@@ -232,13 +232,12 @@ policies:
                     metadata:
                       name: prometheus-pvc
                     spec:
-                      storageClassName: ocs-external-storagecluster-ceph-rbd    # change to match the storageclass created for deployment
+                      storageClassName: ocs-external-storagecluster-ceph-rbd
                       resources:
                         requests:
                           storage: 300Gi
                       accessModes:
-                        - ReadWriteOnce            
-
+                        - ReadWriteOnce
 
 #          - apiVersion: v1
 #            kind: Secret
