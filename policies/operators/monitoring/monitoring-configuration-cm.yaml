@@ -4,127 +4,28 @@ metadata:
   name: cluster-monitoring-config
   namespace: openshift-monitoring
 data:
-  config.yaml: |-
-    enableUserWorkload: false
+  config.yaml: |
     alertmanagerMain:
-      nodeSelector:
-        node-role.kubernetes.io/infra: ""
-      tolerations:
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - effect: NoExecute
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
       volumeClaimTemplate:
         metadata:
-          name: alertmanager-claim
+          name: alertmanager-pvc
         spec:
-          storageClassName: infra
+          storageClassName: ocs-storagecluster-ceph-rbd
           resources:
             requests:
               storage: 50Gi
+          accessModes:
+            - ReadWriteOnce
     prometheusK8s:
       retention: 14d
-      retentionSize: 210GB
-      nodeSelector:
-        node-role.kubernetes.io/infra: ""
-      tolerations:
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - effect: NoExecute
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
+      retentionSize: 220GB
       volumeClaimTemplate:
         metadata:
-          name: prometheus-claim
+          name: prometheus-pvc
         spec:
-          storageClassName: infra
+          storageClassName: ocs-storagecluster-ceph-rbd
           resources:
             requests:
-              storage: 250Gi
-    prometheusOperator:
-      nodeSelector:
-        node-role.kubernetes.io/infra: ""
-      tolerations:
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - effect: NoExecute
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
-    kubeStateMetrics:
-      nodeSelector:
-        node-role.kubernetes.io/infra: ""
-      tolerations:
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - effect: NoExecute
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
-    metricsServer:
-      nodeSelector:
-        node-role.kubernetes.io/infra: ""
-      tolerations:
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - effect: NoExecute
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
-    telemeterClient:
-      nodeSelector:
-        node-role.kubernetes.io/infra: ""
-      tolerations:
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - effect: NoExecute
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
-    openshiftStateMetrics:
-      nodeSelector:
-        node-role.kubernetes.io/infra: ""
-      tolerations:
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - effect: NoExecute
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
-    thanosQuerier:
-      nodeSelector:
-        node-role.kubernetes.io/infra: ""
-      tolerations:
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - effect: NoExecute
-          key: node-role.kubernetes.io/infra
-          value: reserved
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
+              storage: 300Gi
+          accessModes:
+            - ReadWriteOnce
