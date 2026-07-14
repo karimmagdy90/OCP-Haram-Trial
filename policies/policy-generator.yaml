@@ -120,6 +120,15 @@ policies:
             spec:
               source: gls-catalog-cs     #change to match the catalogSource created for deployment
 
+  - name: configure-quay-operator
+    dependencies:
+      - name: install-quay-operator
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Configure Quay Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/quay/configure/
 
 
 
