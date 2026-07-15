@@ -36,3 +36,4 @@ spec:
           memory: 12Gi
   - kind: clairpostgres
     managed: false
+  configBundleSecret: config-bundle-secret
