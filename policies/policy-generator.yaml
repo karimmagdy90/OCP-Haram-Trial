@@ -158,7 +158,7 @@ policies:
               name: update-service-oc-mirror
               namespace: openshift-update-service
             spec:
-              graphDataImage: registry.ocp4.example.com:8443/redhat/openshift/graph-image:latest  
+              graphDataImage: registry.apps.ocp4.example.com:8443/redhat/openshift/graph-image:latest  
               releases: registry.apps.ocp4.example.com:8443/redhat/openshift/release-images
               replicas: 2
 
