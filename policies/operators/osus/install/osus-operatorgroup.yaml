@@ -1,0 +1,9 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: openshift-update-service
+  namespace: openshift-update-service
+spec:
+  targetNamespaces:
+  - openshift-update-service
+  upgradeStrategy: Default
