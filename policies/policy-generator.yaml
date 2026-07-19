@@ -102,33 +102,33 @@ policies:
 
 
 
-  - name: install-quay-operator
-  #  dependencies:
-  #    - name: apply-cluster-post-configuration
-    categories: ["CM Configuration Management"]
-    controls: ["CM-2 Baseline Configuration"]
-    description: "Install Quay Operator"
-    orderManifests: true
-    manifests:
-      - path: operators/quay/install/
-        patches:
-          - apiVersion: operators.coreos.com/v1alpha1
-            kind: Subscription
-            metadata:
-              name: quay-operator
-              namespace: openshift-operators
-            spec:
-              source: gls-catalog-cs     #change to match the catalogSource created for deployment
-
-  - name: configure-quay-operator
-    dependencies:
-      - name: install-quay-operator
-    categories: ["CM Configuration Management"]
-    controls: ["CM-2 Baseline Configuration"]
-    description: "Configure Quay Operator"
-    orderManifests: true
-    manifests:
-      - path: operators/quay/configure/
+#  - name: install-quay-operator
+#  #  dependencies:
+#  #    - name: apply-cluster-post-configuration
+#    categories: ["CM Configuration Management"]
+#    controls: ["CM-2 Baseline Configuration"]
+#    description: "Install Quay Operator"
+#    orderManifests: true
+#    manifests:
+#      - path: operators/quay/install/
+#        patches:
+#          - apiVersion: operators.coreos.com/v1alpha1
+#            kind: Subscription
+#            metadata:
+#              name: quay-operator
+#              namespace: openshift-operators
+#            spec:
+#              source: gls-catalog-cs     #change to match the catalogSource created for deployment
+#
+#  - name: configure-quay-operator
+#    dependencies:
+#      - name: install-quay-operator
+#    categories: ["CM Configuration Management"]
+#    controls: ["CM-2 Baseline Configuration"]
+#    description: "Configure Quay Operator"
+#    orderManifests: true
+#    manifests:
+#      - path: operators/quay/configure/
 
 
 
