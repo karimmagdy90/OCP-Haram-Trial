@@ -142,15 +142,25 @@ policies:
       - path: operators/osus/install/
 
 
-#  - name: configure-quay-operator
-#    dependencies:
-#      - name: install-quay-operator
-#    categories: ["CM Configuration Management"]
-#    controls: ["CM-2 Baseline Configuration"]
-#    description: "Configure Quay Operator"
-#    orderManifests: true
-#    manifests:
-#      - path: operators/quay/configure/
+  - name: configure-cincinnati-operator
+    dependencies:
+      - name: install-cincinnati-operator
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Configure cincinnati Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/osus/configure/updateservice.yaml
+      patches:
+        - apiVersion: updateservice.operator.openshift.io/v1
+          kind: UpdateService
+          metadata:
+            name: update-service-oc-mirror
+            namespace: openshift-update-service
+          spec:
+            graphDataImage: registry.ocp4.example.com:8443/redhat/openshift/graph-image:latest
+            releases: registry.apps.ocp4.example.com:8443/redhat/openshift/release-images
+            replicas: 2
 
 
 
