@@ -151,14 +151,14 @@ policies:
     orderManifests: true
     manifests:
       - path: operators/osus/configure/updateservice.yaml
-      patches:
+      patches:  #remove the following patch if you want to use the default registry as configured in Telecom Egypt
         - apiVersion: updateservice.operator.openshift.io/v1
           kind: UpdateService
           metadata:
             name: update-service-oc-mirror
             namespace: openshift-update-service
           spec:
-            graphDataImage: registry.ocp4.example.com:8443/redhat/openshift/graph-image:latest
+            graphDataImage: registry.ocp4.example.com:8443/redhat/openshift/graph-image:latest  
             releases: registry.apps.ocp4.example.com:8443/redhat/openshift/release-images
             replicas: 2
 

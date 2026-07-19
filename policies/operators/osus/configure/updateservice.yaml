@@ -4,6 +4,6 @@ metadata:
   name: update-service-oc-mirror
   namespace: openshift-update-service
 spec:
-  graphDataImage: registry.apps.oct4-hub.telco.te/redhat/openshift/graph-image:latest
-  releases: registry.apps.oct4-hub.telco.te/redhat/openshift/release-images
+  graphDataImage: registry.apps.auto-hub.telco.te/redhat/openshift/graph-image:latest
+  releases: registry.apps.auto-hub.telco.te/redhat/openshift/release-images
   replicas: 2
