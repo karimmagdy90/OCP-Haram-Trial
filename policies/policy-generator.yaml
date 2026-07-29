@@ -196,7 +196,7 @@ policies:
 
   - name: install-configure-clusterobservability-operator
     dependencies:
-      - name: configure-logging-operator
+      - name: install-configure-logging-operator
     categories: ["CM Configuration Management"]
     controls: ["CM-2 Baseline Configuration"]
     description: "Install and Configure Cluster Observability Operator"
