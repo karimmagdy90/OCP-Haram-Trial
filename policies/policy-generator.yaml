@@ -102,54 +102,37 @@ policies:
 
 
 
-#  - name: install-quay-operator
-#  #  dependencies:
-#  #    - name: apply-cluster-post-configuration
-#    categories: ["CM Configuration Management"]
-#    controls: ["CM-2 Baseline Configuration"]
-#    description: "Install Quay Operator"
-#    orderManifests: true
-#    manifests:
-#      - path: operators/quay/install/
-#        patches:
-#          - apiVersion: operators.coreos.com/v1alpha1
-#            kind: Subscription
-#            metadata:
-#              name: quay-operator
-#              namespace: openshift-operators
-#            spec:
-#              source: gls-catalog-cs     #change to match the catalogSource created for deployment
-#
-#  - name: configure-quay-operator
-#    dependencies:
-#      - name: install-quay-operator
-#    categories: ["CM Configuration Management"]
-#    controls: ["CM-2 Baseline Configuration"]
-#    description: "Configure Quay Operator"
-#    orderManifests: true
-#    manifests:
-#      - path: operators/quay/configure/
-
-
-  - name: install-cincinnati-operator
+  - name: install-and-configure-quay-operator
   #  dependencies:
   #    - name: apply-cluster-post-configuration
     categories: ["CM Configuration Management"]
     controls: ["CM-2 Baseline Configuration"]
-    description: "Install cincinnati Operator"
+    description: "Install and Configure Quay Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/quay/install/
+        patches:
+          - apiVersion: operators.coreos.com/v1alpha1
+            kind: Subscription
+            metadata:
+              name: quay-operator
+              namespace: openshift-operators
+            spec:
+              source: gls-catalog-cs     #change to match the catalogSource created for deployment
+      - path: operators/quay/configure/
+
+
+
+
+  - name: install-configure-cincinnati-operator
+  #  dependencies:
+  #    - name: apply-cluster-post-configuration
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Install and Configure cincinnati Operator"
     orderManifests: true
     manifests:
       - path: operators/osus/install/
-
-
-  - name: configure-cincinnati-operator
-    dependencies:
-      - name: install-cincinnati-operator
-    categories: ["CM Configuration Management"]
-    controls: ["CM-2 Baseline Configuration"]
-    description: "Configure cincinnati Operator"
-    orderManifests: true
-    manifests:
       - path: operators/osus/configure/updateservice.yaml
         patches:  #remove the following patch if you want to use the default registry as configured in Telecom Egypt
           - apiVersion: updateservice.operator.openshift.io/v1
@@ -164,144 +147,114 @@ policies:
 
 
 
-#  - name: install-loki-operator
-#  #  dependencies:
-#  #    - name: apply-cluster-post-configuration
-#    categories: ["CM Configuration Management"]
-#    controls: ["CM-2 Baseline Configuration"]
-#    description: "Install Loki Operator"
-#    orderManifests: true
-#    manifests:
-#      - path: operators/loki/install/
-#        patches:
-#          - apiVersion: operators.coreos.com/v1alpha1
-#            kind: Subscription
-#            metadata:
-#              name: loki-operator
-#              namespace: openshift-operators-redhat
-#            spec:
-#              source: gls-catalog-cs     #change to match the catalogSource created for deployment
-#
-#  - name: configure-loki-operator
-#    dependencies:
-#      - name: install-loki-operator
-#    categories: ["CM Configuration Management"]
-#    controls: ["CM-2 Baseline Configuration"]
-#    description: "Configure Loki Operator"
-#    orderManifests: true
-#    manifests:
-#      - path: operators/loki/configure/
-#        patches:
-#          - apiVersion: loki.grafana.com/v1
-#            kind: LokiStack
-#            metadata:
-#              name: logging-loki
-#              namespace: openshift-logging
-#            spec:
-#              storageClassName: ocs-external-storagecluster-ceph-rbd    #change to match the storageclass created for deployment
-#
-#  - name: install-logging-operator
-#  #  dependencies:
-#  #    - name: apply-cluster-post-configuration
-#    categories: ["CM Configuration Management"]
-#    controls: ["CM-2 Baseline Configuration"]
-#    description: "Install logging Operator"
-#    orderManifests: true
-#    manifests:
-#      - path: operators/logging/install/
-#        patches:
-#          - apiVersion: operators.coreos.com/v1alpha1
-#            kind: Subscription
-#            metadata:
-#              name: cluster-logging
-#              namespace: openshift-logging
-#            spec:
-#              source: gls-catalog-cs     #change to match the catalogSource created for deployment
-#
-#
-#  - name: configure-logging-operator
-#    dependencies:
-#      - name: configure-loki-operator
-#    categories: ["CM Configuration Management"]
-#    controls: ["CM-2 Baseline Configuration"]
-#    description: "Configure logging Operator"
-#    orderManifests: true
-#    manifests:
-#      - path: operators/logging/configure/
-#
-#
-#
-#  - name: install-clusterobservability-operator
-#    dependencies:
-#      - name: configure-logging-operator
-#    categories: ["CM Configuration Management"]
-#    controls: ["CM-2 Baseline Configuration"]
-#    description: "Install Cluster Observability Operator"
-#    orderManifests: true
-#    manifests:
-#      - path: operators/coo/install/
-#        patches:
-#          - apiVersion: operators.coreos.com/v1alpha1
-#            kind: Subscription
-#            metadata:
-#              name: cluster-observability-operator
-#              namespace: openshift-cluster-observability-operator
-#            spec:
-#              source: gls-catalog-cs     #change to match the catalogSource created for deployment
-#
-#
-#  - name: configure-clusterobservability-operator
-#    dependencies:
-#      - name: install-clusterobservability-operator
-#    categories: ["CM Configuration Management"]
-#    controls: ["CM-2 Baseline Configuration"]
-#    description: "Configure Cluster Observability Operator"
-#    orderManifests: true
-#    manifests:
-#      - path: operators/coo/configure/
-#
-#
-#  - name: configure-monitoring-operator
-#    #dependencies:
-#      #- name: install-clusterobservability-operator
-#    categories: ["CM Configuration Management"]
-#    controls: ["CM-2 Baseline Configuration"]
-#    description: "Configure Monitoring Operator"
-#    orderManifests: true
-#    manifests:
-#      - path: operators/monitoring/monitoring-configuration-cm.yaml
-#        patches:    # this patch to change StoragClassname to match on the lab deployment
-#          - apiVersion: v1
-#            kind: ConfigMap
-#            metadata:
-#              name: cluster-monitoring-config
-#              namespace: openshift-monitoring
-#            data:
-#              config.yaml: |
-#                alertmanagerMain:
-#                  volumeClaimTemplate:
-#                    metadata:
-#                      name: alertmanager-pvc
-#                    spec:
-#                      storageClassName: ocs-external-storagecluster-ceph-rbd
-#                      resources:
-#                        requests:
-#                          storage: 50Gi
-#                      accessModes:
-#                        - ReadWriteOnce
-#                prometheusK8s:
-#                  retention: 14d
-#                  retentionSize: 220GB
-#                  volumeClaimTemplate:
-#                    metadata:
-#                      name: prometheus-pvc
-#                    spec:
-#                      storageClassName: ocs-external-storagecluster-ceph-rbd
-#                      resources:
-#                        requests:
-#                          storage: 300Gi
-#                      accessModes:
-#                        - ReadWriteOnce
+  - name: install-configure-loki-operator
+  #  dependencies:
+  #    - name: apply-cluster-post-configuration
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Install and Configure Loki Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/loki/install/
+        patches:
+          - apiVersion: operators.coreos.com/v1alpha1
+            kind: Subscription
+            metadata:
+              name: loki-operator
+              namespace: openshift-operators-redhat
+            spec:
+              source: gls-catalog-cs     #change to match the catalogSource created for deployment
+      - path: operators/loki/configure/
+        patches:
+          - apiVersion: loki.grafana.com/v1
+            kind: LokiStack
+            metadata:
+              name: logging-loki
+              namespace: openshift-logging
+            spec:
+              storageClassName: ocs-external-storagecluster-ceph-rbd    #change to match the storageclass created for deployment
+
+  - name: install-configure-logging-operator
+  #  dependencies:
+  #    - name: apply-cluster-post-configuration
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Install and Configure logging Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/logging/install/
+        patches:
+          - apiVersion: operators.coreos.com/v1alpha1
+            kind: Subscription
+            metadata:
+              name: cluster-logging
+              namespace: openshift-logging
+            spec:
+              source: gls-catalog-cs     #change to match the catalogSource created for deployment
+      - path: operators/logging/configure/
+
+
+  - name: install-configure-clusterobservability-operator
+    dependencies:
+      - name: configure-logging-operator
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Install and Configure Cluster Observability Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/coo/install/
+        patches:
+          - apiVersion: operators.coreos.com/v1alpha1
+            kind: Subscription
+            metadata:
+              name: cluster-observability-operator
+              namespace: openshift-cluster-observability-operator
+            spec:
+              source: gls-catalog-cs     #change to match the catalogSource created for deployment
+      - path: operators/coo/configure/
+
+
+  - name: configure-monitoring-operator
+    #dependencies:
+      #- name: install-configure-clusterobservability-operator
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "Configure Monitoring Operator"
+    orderManifests: true
+    manifests:
+      - path: operators/monitoring/monitoring-configuration-cm.yaml
+        patches:    # this patch to change StoragClassname to match on the lab deployment
+          - apiVersion: v1
+            kind: ConfigMap
+            metadata:
+              name: cluster-monitoring-config
+              namespace: openshift-monitoring
+            data:
+              config.yaml: |
+                alertmanagerMain:
+                  volumeClaimTemplate:
+                    metadata:
+                      name: alertmanager-pvc
+                    spec:
+                      storageClassName: ocs-external-storagecluster-ceph-rbd
+                      resources:
+                        requests:
+                          storage: 50Gi
+                      accessModes:
+                        - ReadWriteOnce
+                prometheusK8s:
+                  retention: 14d
+                  retentionSize: 220GB
+                  volumeClaimTemplate:
+                    metadata:
+                      name: prometheus-pvc
+                    spec:
+                      storageClassName: ocs-external-storagecluster-ceph-rbd
+                      resources:
+                        requests:
+                          storage: 300Gi
+                      accessModes:
+                        - ReadWriteOnce
 
 #          - apiVersion: v1
 #            kind: Secret
