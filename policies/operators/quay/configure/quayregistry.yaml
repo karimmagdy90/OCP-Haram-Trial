@@ -37,3 +37,4 @@ spec:
   - kind: clairpostgres
     managed: false
   configBundleSecret: config-bundle-secret
+  #make sure that the default storageClass is set and not NFS
