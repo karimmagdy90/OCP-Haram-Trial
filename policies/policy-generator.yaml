@@ -145,7 +145,7 @@ policies:
               releases: registry.ocp4.example.com/redhat/openshift/release-images
               replicas: 2
 
-- name: configure-clusterversion-updatestream-workload
+  - name: configure-clusterversion-updatestream-workload
     categories: ["CM Configuration Management"]
     controls: ["CM-2 Baseline Configuration"]
     description: "configure upstream for clusterversion to use the local update operator for workload/edge clusters"
