@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: quay.redhat.com/v1
+  kind: QuayRegistry
+  metadata:
+    name: registry
+    namespace: quay-enterprise
+  status:
+    conditions:
+    - status: "True"
+      type: ComponentPostgresReady
+    - status: "True"
+      type: ComponentObjectStorageReady
+    - status: "True"
+      type: ComponentRedisReady
+    - status: "True"
+      type: ComponentQuayReady
+    - status: "True"
+      type: ComponentMirrorReady
+    - status: "True"
+      type: Available
+    - status: "True"
+      type: ComponentsCreated
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: registry-quay-app
+    namespace: quay-enterprise
+  status:
+    conditions:
+    - status: "True"
+      type: Available
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: registry-quay-database
+    namespace: quay-enterprise
+  status:
+    conditions:
+    - status: "True"
+      type: Available
+  

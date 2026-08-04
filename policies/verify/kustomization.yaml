@@ -7,3 +7,4 @@ resources:
   - coo-uiplugin-verify.yaml
   - monitoring-pvcclaim-verify.yaml
   - updateservice-verify.yaml
+  - quayregistry-verify.yaml
