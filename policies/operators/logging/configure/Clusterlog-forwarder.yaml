@@ -25,6 +25,6 @@ spec:
       inputRefs:
         - application
         - infrastructure
-        - audit
+      #  - audit     # it wasn't activated during redhat deployment of clusters
       outputRefs:
         - default-lokistack

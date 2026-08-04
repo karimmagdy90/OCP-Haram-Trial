@@ -1,0 +1,25 @@
+apiVersion: observability.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: collector
+  namespace: openshift-logging
+status:
+  conditions:
+  - status: "True"
+    type: observability.openshift.io/Authorized
+  - status: "True"
+    type: observability.openshift.io/Valid
+  - status: "True"
+    type: Ready
+  inputConditions:
+  - status: "True"
+    type: observability.openshift.io/ValidInput-application
+  - status: "True"
+    type: observability.openshift.io/ValidInput-infrastructure
+  outputConditions:
+  - status: "True"
+    type: observability.openshift.io/ValidOutput-default-lokistack
+  pipelineConditions:
+  - status: "True"
+    type: observability.openshift.io/ValidPipeline-default-logstore
+

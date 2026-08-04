@@ -5,19 +5,5 @@ metadata:
   namespace: openshift-logging
 status:
   conditions:
-  - message: All components ready
-    reason: ReadyComponents
-    status: "True"
+  - status: "True"
     type: Ready
-  - message: All components are running, but some readiness checks are failing
-    reason: PendingComponents
-    status: "False"
-    type: Pending
-  - message: One or more LokiStack components failed
-    reason: FailedComponents
-    status: "False"
-    type: Failed
-  - message: Missing object storage secret
-    reason: MissingObjectStorageSecret
-    status: "False"
-    type: Degraded

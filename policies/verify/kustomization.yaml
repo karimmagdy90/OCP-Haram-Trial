@@ -3,3 +3,4 @@ kind: Component
 
 resources:
   - lokistack-verify.yaml
+  - logging-verify.yaml
