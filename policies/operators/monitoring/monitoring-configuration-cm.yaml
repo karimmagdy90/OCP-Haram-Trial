@@ -10,7 +10,7 @@ data:
         metadata:
           name: alertmanager-pvc
         spec:
-          storageClassName: ocs-storagecluster-ceph-rbd
+          storageClassName: infra    # for Edge Cluster, for Workload and hub change to ocs-storagecluster-ceph-rbd
           resources:
             requests:
               storage: 50Gi
@@ -23,9 +23,9 @@ data:
         metadata:
           name: prometheus-pvc
         spec:
-          storageClassName: ocs-storagecluster-ceph-rbd
+          storageClassName: infra  # for Edge Cluster, for Workload and hub change to ocs-storagecluster-ceph-rbd
           resources:
             requests:
-              storage: 300Gi
+              storage: 250Gi   
           accessModes:
             - ReadWriteOnce

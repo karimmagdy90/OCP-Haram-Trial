@@ -145,6 +145,13 @@ policies:
               releases: registry.ocp4.example.com/redhat/openshift/release-images
               replicas: 2
 
+- name: configure-clusterversion-updatestream-workload
+    categories: ["CM Configuration Management"]
+    controls: ["CM-2 Baseline Configuration"]
+    description: "configure upstream for clusterversion to use the local update operator for workload/edge clusters"
+    orderManifests: true
+    manifests:
+      - path: operators/osus/configure/clusterversion-upstream.yaml
 
 
   - name: install-configure-loki-operator
@@ -216,7 +223,7 @@ policies:
 
   - name: configure-monitoring-operator
     #dependencies:
-      #- name: install-configure-clusterobservability-operator
+      #- name: install-configure-ODF-operator
     categories: ["CM Configuration Management"]
     controls: ["CM-2 Baseline Configuration"]
     description: "Configure Monitoring Operator"
@@ -236,7 +243,7 @@ policies:
                     metadata:
                       name: alertmanager-pvc
                     spec:
-                      storageClassName: ocs-external-storagecluster-ceph-rbd
+                      storageClassName: ocs-external-storagecluster-ceph-rbd   #change to match the storageclass created for deployment
                       resources:
                         requests:
                           storage: 50Gi
@@ -249,7 +256,7 @@ policies:
                     metadata:
                       name: prometheus-pvc
                     spec:
-                      storageClassName: ocs-external-storagecluster-ceph-rbd
+                      storageClassName: ocs-external-storagecluster-ceph-rbd  #change to match the storageclass created for deployment
                       resources:
                         requests:
                           storage: 300Gi

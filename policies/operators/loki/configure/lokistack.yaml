@@ -18,7 +18,7 @@ spec:
           priority: 1
           selector: '{log_type="infrastructure"}'
   managementState: Managed
-  size: 1x.extra-small
+  size: 1x.small   #  small for Edge Cluster, for Workload medium and hub extra-small
   storage:
     schemas:
     - effectiveDate: "2024-10-01"

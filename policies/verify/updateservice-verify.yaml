@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: updateservice.operator.openshift.io/v1
+  kind: UpdateService
+  metadata:
+    name: update-service-oc-mirror
+    namespace: openshift-update-service
+  status:
+    conditions:
+    - status: "True"
+      type: ReconcileCompleted
+    - status: "True"
+      type: RegistryCACertFound
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: update-service-oc-mirror
+    namespace: openshift-update-service
+  status:
+    conditions:
+    - status: "True"
+      type: Available

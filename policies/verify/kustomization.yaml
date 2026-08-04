@@ -5,3 +5,5 @@ resources:
   - lokistack-verify.yaml
   - logging-verify.yaml
   - coo-uiplugin-verify.yaml
+  - monitoring-pvcclaim-verify.yaml
+  - updateservice-verify.yaml

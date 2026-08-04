@@ -1,0 +1,6 @@
+apiVersion: config.openshift.io/v1
+kind: ClusterVersion
+metadata:
+  name: version
+spec:
+  upstream: https://update-service-oc-mirror-route-openshift-update-service.apps.tanta-hub.telco.te/api/upgrades_info/v1/graph
