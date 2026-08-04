@@ -175,8 +175,8 @@ policies:
               storageClassName: ocs-external-storagecluster-ceph-rbd    #change to match the storageclass created for deployment
 
   - name: install-configure-logging-operator
-  #  dependencies:
-  #    - name: apply-cluster-post-configuration
+    dependencies:
+      - name: install-configure-loki-operator
     categories: ["CM Configuration Management"]
     controls: ["CM-2 Baseline Configuration"]
     description: "Install and Configure logging Operator"

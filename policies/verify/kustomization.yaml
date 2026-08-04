@@ -4,3 +4,4 @@ kind: Component
 resources:
   - lokistack-verify.yaml
   - logging-verify.yaml
+  - coo-uiplugin-verify.yaml
