@@ -6,6 +6,6 @@ metadata:
 spec:
   channel: v1
   name: cincinnati-operator
-  source: redhat-operator-index
+  source: redhat-operators-disconnected
   sourceNamespace: openshift-marketplace
   installPlanApproval: Automatic
